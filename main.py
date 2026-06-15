@@ -19,7 +19,7 @@ with open("dijkstra.txt", "w") as f:
 with open("graphe.txt", "w") as f:
     f.write(str(graphe))
 
-loop_path = create_loop(start, shortly_distance, graphe, 1000)
+loop_path = create_loop(start, shortly_distance, graphe, 100)
 
 print(loop_path[1])
 
