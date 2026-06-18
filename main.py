@@ -8,11 +8,12 @@ list_path = False
 
 while not list_path:
     list_path = get_path()
-    time.sleep(0.01)
+    time.sleep(0.1)
 
 graphe = create_graphe(list_path)
 
-start = list(graphe.keys())[0]
+#start = list(graphe.keys())[450]
+start = (round(45.0214958, 5), round(1.7846848, 5))
 shortly_distance = dijkstra(graphe, start)
 
 with open("dijkstra.txt", "w") as f:
@@ -20,7 +21,7 @@ with open("dijkstra.txt", "w") as f:
 with open("graphe.txt", "w") as f:
     f.write(str(graphe))
 
-loop_path = create_loop(start, shortly_distance, graphe, 1000)
+loop_path = create_loop(start, shortly_distance, graphe, 10000)
 
 print(loop_path[1])
 

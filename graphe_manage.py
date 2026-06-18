@@ -3,15 +3,16 @@ import random
 
 def create_graphe(list_path:list[dict])->dict:
     graphe = {}
+    list_point = []
     for path in list_path:
         list_point = [(pt["lat"], pt["lon"]) for pt in path["geometry"]]
 
-    for i in range(1, len(list_point)):
-        point1 = (round(list_point[i-1][0], 5), round(list_point[i-1][1], 5))
-        point2 = (round(list_point[i][0], 5), round(list_point[i][1], 5))
-        dist = calcul_dist(point1, point2)
-        graphe[point1] = graphe.get(point1, []) + [(point2, dist)]
-        graphe[point2] = graphe.get(point2, []) + [(point1, dist)]
+        for i in range(1, len(list_point)):
+            point1 = (round(list_point[i-1][0], 5), round(list_point[i-1][1], 5))
+            point2 = (round(list_point[i][0], 5), round(list_point[i][1], 5))
+            dist = calcul_dist(point1, point2)
+            graphe[point1] = graphe.get(point1, []) + [(point2, dist)]
+            graphe[point2] = graphe.get(point2, []) + [(point1, dist)]
     
     return graphe
 
@@ -22,7 +23,17 @@ def create_loop(start:tuple, shortly_distance:dict, graphe:dict, distance_wanted
     passed = [start]
 
     while dist + shortly_distance[point][0] < max:
-        point, curr_dist = graphe[point][random.randint(0, len(graphe[point])-1)]
+        if len(graphe[point]) > 3:
+            list_available_point = [p for p in graphe[point] if p[0] not in passed[-3:]]
+        elif len(graphe[point]) > 2:
+            list_available_point = [p for p in graphe[point] if p[0] not in passed[-2:]]
+        elif len(graphe[point]) > 1:
+            list_available_point = [p for p in graphe[point] if p[0] not in passed[-1:]]
+        else:
+            list_available_point = graphe[point]
+
+        point, curr_dist = random.choice(list_available_point)
+
         dist += curr_dist
         passed.append(point)
 

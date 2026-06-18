@@ -8,7 +8,7 @@ overpass_request = """
 (
 	way["highway"](around:2000, 45.0320272, 1.8060011);
 	-
-	way["highway"~"primary"](around:2000, 45.0320272, 1.8060011);
+	way["highway"~"primary|service"](around:2000, 45.0320272, 1.8060011);
 );
 out geom;"""
 
