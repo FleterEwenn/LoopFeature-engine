@@ -23,15 +23,13 @@ def create_loop(start:tuple, shortly_distance:dict, graphe:dict, distance_wanted
     passed = [start]
 
     while dist + shortly_distance[point][0] < max:
-        if len(graphe[point]) > 3:
-            list_available_point = [p for p in graphe[point] if p[0] not in passed[-3:]]
-        elif len(graphe[point]) > 2:
-            list_available_point = [p for p in graphe[point] if p[0] not in passed[-2:]]
+        if len(graphe[point]) > 2:
+            list_available_point = [p for p in graphe[point] if p[0] not in passed[-3:]] + [p for p in graphe[point] if p[0] not in passed]
         elif len(graphe[point]) > 1:
-            list_available_point = [p for p in graphe[point] if p[0] not in passed[-1:]]
+            list_available_point = [p for p in graphe[point] if p[0] not in passed[-2:]] + [p for p in graphe[point] if p[0] not in passed]
         else:
             list_available_point = graphe[point]
-
+        random.shuffle(list_available_point)
         point, curr_dist = random.choice(list_available_point)
 
         dist += curr_dist
