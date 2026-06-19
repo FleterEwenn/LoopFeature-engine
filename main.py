@@ -6,14 +6,25 @@ import time
 import random
 
 list_path = False
+print("Veuillez entrez les coordonnées du point de départ")
+lat_center = input("latitude : ")
+long_center = input("longitude : ")
+
+center = (float(lat_center), float(long_center))
+
+distance = float(input("Entrez la distance à courir (en km) : "))
+distance = distance * 1000
 
 while not list_path:
-    list_path = get_path()
+    list_path = get_path(center, distance)
     time.sleep(0.1)
 
 graphe = create_graphe(list_path)
-start = list(graphe.keys())[random.randint(0, 3058)]
-#start = (round(45.0251272, 5), round(1.7876748, 5))
+
+for point in graphe:
+    if (round(center[0], 3), round(center[1], 3)) == (round(point[0], 3), round(point[1], 3)):
+        start = point
+
 shortly_distance = dijkstra(graphe, start)
 
 with open("dijkstra.txt", "w") as f:
@@ -21,7 +32,7 @@ with open("dijkstra.txt", "w") as f:
 with open("graphe.txt", "w") as f:
     f.write(str(graphe))
 
-loop_path = create_loop(start, shortly_distance, graphe, 15000)
+loop_path = create_loop(start, shortly_distance, graphe, distance)
 
 print(loop_path[1])
 

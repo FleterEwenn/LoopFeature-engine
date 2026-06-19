@@ -3,16 +3,17 @@ import math
 
 url = "https://overpass-api.de/api/interpreter"
 
-overpass_request = """
-[out:json][timeout:20];
-(
-	way["highway"](around:2000, 45.0320272, 1.8060011);
-	-
-	way["highway"~"primary|service"](around:2000, 45.0320272, 1.8060011);
-);
-out geom;"""
+def get_path(center:tuple[float, float], total_distance:float)->dict:
+    radius = int(0.25*total_distance)
+    overpass_request = f"""
+    [out:json][timeout:20];
+    (
+        way["highway"](around:{radius}, {center[0]}, {center[1]});
+        -
+        way["highway"~"primary|service"](around:{radius}, {center[0]}, {center[1]});
+    );
+    out geom;"""
 
-def get_path()->dict:
     response = requests.post(url, 
                              data=overpass_request, 
                              headers={
@@ -25,6 +26,7 @@ def get_path()->dict:
         return data["elements"]
     else:
         return False
+    
 def calcul_dist(point1:tuple[int, int], point2:tuple[int, int])->float:
     midlat = (point1[0] + point2[0])/2
     dy = (point1[0] - point2[0]) * 110540
