@@ -33,7 +33,4 @@ loop_path = create_loop(start, shortly_distance, graphe, distance)
 
 print(loop_path[1])
 
-with open("path.txt", "w") as f:
-    f.write(str(loop_path[0]))
-
 generate_GPX(loop_path[0])
