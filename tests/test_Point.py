@@ -2,8 +2,8 @@ from loopfeature.point import Point
 
 def test_access_attribute_class_Point():
     point1 = Point(10, 20)
-    assert point1.latitude == 20
-    assert point1.longitude == 10
+    assert point1.latitude == 10
+    assert point1.longitude == 20
 
 def test_hashable_class_Point():
     point1 = Point(10, 20)

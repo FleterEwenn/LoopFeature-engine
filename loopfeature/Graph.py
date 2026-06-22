@@ -1,39 +1,37 @@
-from point import Point
-
 class Graph:
-    def __init__(self, list_path:list):
-        self.graph = {}
-
-        for path in list_path:
-            list_point = [Point(round(point["lat"], 5), round(point["long"], 5)) for point in path["geometry"]]
-
-            for i in range(1, len(list_point)):
-                self.graph[list_point[i]] = self.graph.get(list_point[i], []) + [list_point[i-1]]
-                self.graph[list_point[i-1]] = self.graph.get(list_point[i-1], []) + [list_point[i]]
+    def __init__(self, weight_function):
+        self.graph = {}        
+        self.__dijkstra = {}
+        self.__weight_function = weight_function
+        print(self.__dijkstra)
         
-        self.dijkstra = {n:(float("inf"), None) for n in self.graph}
-        
-    def get_neighbors(self, point:Point)->list[(Point, float)]:
-        return self.graph[point]
+    def get_neighbors(self, node)->list:
+        return self.graph[node]
     
-    def get_shortest_path(self, point:Point)->tuple[Point, float]:
-        return self.dijkstra[point]
+    def get_shortest_path(self, node)->tuple:
+        return self.__dijkstra[node]
 
-    def construct_dijkstra(self, start:Point):
+    def construct_dijkstra(self, start):
+        self.__dijkstra = {n:(float("inf"), None) for n in self.graph}
 
-        self.dijkstra[start] = (0, start)
+        self.__dijkstra[start] = (0, start)
 
         file = [(0, start)]
 
         while len(file) > 0:
-            current_dist, current_node = file.pop(0)
+            current_weight, current_node = file.pop(0)
 
-            if not current_dist > self.dijkstra[current_node][0]:
+            if not current_weight > self.__dijkstra[current_node][0]:
 
-                for neighbor, neighbor_dist in self.get_neighbors(current_node):
-                    new_dist = current_dist + neighbor_dist
-                    
-                    if new_dist < self.dijkstra[neighbor][0]:
-                        self.dijkstra[neighbor] = (new_dist, current_node)
+                for neighbor, neighbor_weight in self.get_neighbors(current_node):
+                    new_weight = current_weight + neighbor_weight
+                    if new_weight < self.__dijkstra[neighbor][0]:
+                        self.__dijkstra[neighbor] = (new_weight, current_node)
 
-                        file.append((new_dist, neighbor))
+                        file.append((new_weight, neighbor))
+    
+    def add_elements(self, elements_list:list):
+        for i in range(1, len(elements_list)):
+            weight = self.__weight_function(elements_list[i], elements_list[i-1])
+            self.graph[elements_list[i]] = self.graph.get(elements_list[i], []) + [(elements_list[i-1], weight)]
+            self.graph[elements_list[i-1]] = self.graph.get(elements_list[i-1], []) + [(elements_list[i], weight)]
