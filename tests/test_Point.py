@@ -14,3 +14,9 @@ def test_hashable_class_Point():
     point3 = Point(10, 20)
 
     assert dict_[point1] == dict_[point3]
+
+def test_calcul_dist_Point():
+    point1 = Point(0, 1)
+    point2 = Point(0, 3)
+
+    assert point1.calcul_dist(point2) == 222640.0 == point2.calcul_dist(point1)
