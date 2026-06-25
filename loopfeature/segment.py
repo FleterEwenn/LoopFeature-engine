@@ -1,5 +1,4 @@
 class Segment:
-    def __init__(self, value:float, ratio:float, id:int):
-        self.value = value
-        self.ratio = ratio
+    def __init__(self, value:float, id:int):
+        self.score = value
         self.id = id

@@ -31,35 +31,6 @@ class Graph:
                         self.__dijkstra[neighbor] = (new_weight, current_node)
 
                         file.append((new_weight, neighbor))
-        
-    def create_loop(self, start, dist_max:float):
-        self.construct_dijkstra(start)
-        
-        node = start
-        passed = [start]
-        dist = 0
-
-        while dist + self.get_shortest_path(node)[0] < dist_max:
-            if len(self.get_neighbors(node)) > 2:
-                list_available_node = [p for p in self.get_neighbors(node)]
-            elif len(self.get_neighbors(node)) > 1:
-                list_available_node = [p for p in self.get_neighbors(node)]
-            else:
-                list_available_node = self.get_neighbors(node)
-
-            random.shuffle(list_available_node)
-            node, curr_dist = random.choice(list_available_node)
-
-            dist += curr_dist
-            passed.append(node)
-
-        dist += self.get_shortest_path(node)[0]
-
-        while node != start:
-            node = self.get_shortest_path(node)[1]
-            passed.append(node)
-        
-        return passed, dist
     
     def add_elements(self, elements_list:list):
         for i in range(1, len(elements_list)):
