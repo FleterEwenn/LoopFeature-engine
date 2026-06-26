@@ -80,7 +80,7 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
         if path_params.get("highway") == "service":
             score -25
             
-        score += 100/(abs(30-ratio)+1)
+        score += 100/(abs(28-ratio)+1)**1.2
         current_segment.score = score
         
         graphe.add_elements(list_points)

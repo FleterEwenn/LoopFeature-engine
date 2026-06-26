@@ -5,12 +5,16 @@ def create_loop(graph, start, dist_max:float, dict_segment:dict)->tuple[list, fl
         passed = [start]
         total_dist = 0
 
-        while dist + graph.get_shortest_path(node)[0] < dist_max:
+        while total_dist + graph.get_shortest_path(node)[0] < dist_max:
             max_score_node = float("-inf")
-            for neighbor, curr_dist in graph.get_neighbors(node):
+
+            neighbors = graph.get_neighbors(node)
+            node, dist = neighbors[0]
+
+            for neighbor, curr_dist in neighbors:
                 max_score_segment = float("-inf")
                 if neighbor in passed:
-                    score = -100
+                    score = -500*passed.count(neighbor)
                 else:
                     score = 100
 
@@ -24,14 +28,13 @@ def create_loop(graph, start, dist_max:float, dict_segment:dict)->tuple[list, fl
                     dist = curr_dist
                     node = neighbor
 
-
             total_dist += dist
             passed.append(node)
 
-        dist += graph.get_shortest_path(node)[0]
+        total_dist += graph.get_shortest_path(node)[0]
 
         while node != start:
             node = graph.get_shortest_path(node)[1]
             passed.append(node)
         
-        return passed, dist
+        return passed, total_dist
