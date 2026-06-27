@@ -77,20 +77,20 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
 
         score = len(path["geometry"])
         if path_params.get("surface",) == "aslphat":
-            score -= 100
-        if path_params.get("highway") == "tertiary":
-            score -= 100
-        if path_params.get("surface") == "dirt":
-            score += 150
-        if path_params.get("highway") == "path":
-            score += 100
-        if path_params.get("highway") == "footway":
-            score += 75
-        if path_params.get("highway") == "service":
             score -= 50
+        if path_params.get("highway") == "tertiary":
+            score -= 50
+        if path_params.get("surface") == "dirt":
+            score += 100
+        if path_params.get("highway") == "path":
+            score += 75
+        if path_params.get("highway") == "footway":
+            score += 50
+        if path_params.get("highway") == "service":
+            score -= 25
         current_segment.score = score
         
-        graphe.add_elements(list_points, other_const_params=path["id"])
+        graphe.add_elements(list_points, other_params=current_segment)
 
         dict_id_point[path["nodes"][0]] = dict_id_point.get(path["nodes"][0], []) + [current_segment]
 

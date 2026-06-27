@@ -4,52 +4,58 @@ def create_loop(graph, start, dist_max:float, dict_segment:dict)->tuple[list, fl
         node = start
         passed = [start]
         total_dist = 0
+        passed_edge = set()
 
         while total_dist + graph.get_shortest_path(node)[0] < dist_max:
-
-            dist_node_to_start = start.calcul_dist(node)
-
-            max_score_node = float("-inf")
-
+            print('--------------')
+            print(node)
             neighbors = graph.get_neighbors(node)
-            node, dist = neighbors[0]
+            best_score = float("-inf")
+            best_node = None
+            best_dist = 0
+            best_edge = None
 
-            for neighbor, curr_dist in neighbors:
-                dist_neighbor_to_start = start.calcul_dist(neighbor)
+            ditance_node_to_start = node.calcul_dist(start)
 
-                max_score_segment = float("-inf")
+            for neighbor, curr_dist, segment in neighbors:
+                distance_neighbor_to_start = neighbor.calcul_dist(start)
+
+                edge = tuple(sorted((node.id, neighbor.id)))
+
+                delta = distance_neighbor_to_start - ditance_node_to_start
+
+                score = segment.score
+
+                score += delta*5
+
+                if edge in passed_edge:
+                    score -= 1000
+                else:
+                    score += 300
+
+                diff = neighbor.elevation - node.elevation
                 if neighbor in passed:
-                    base_score = -500
+                    score -= 500 * passed.count(neighbor)
                 else:
-                    base_score = 500
+                    score += 500
                 
-                if dist_node_to_start > dist_neighbor_to_start:
-                    base_score -= 200
+                if diff > 0:
+                    elevation_gain = diff
                 else:
-                    base_score += 200 
-
-                for segment in dict_segment[neighbor.id]:
-                    score = base_score + segment.score
-
-                    dist_neighbor_to_first = neighbor.calcul_dist(segment.first_point)
-                    dist_neighbor_to_last = neighbor.calcul_dist(segment.last_point)
-
-                    if dist_neighbor_to_last > dist_neighbor_to_first:
-                        ratio = segment.elev_gain_FtoL/(segment.distance/1000)
-                    else:
-                        ratio = segment.elev_gain_LtoF/(segment.distance/1000)
-                    score += 100/(abs(30-ratio)+1)
-
-                    if score > max_score_segment:
-                        max_score_segment = score
-
-                if max_score_segment > max_score_node:
-                    max_score_node = max_score_segment
-                    dist = curr_dist
-                    node = neighbor
-
-            total_dist += dist
+                    elevation_gain = -diff
+                score += 100/(abs(30-elevation_gain)+1)
+                print(segment.score)
+                print(score)
+                if score > best_score:
+                    best_score = score
+                    best_node = neighbor
+                    best_dist = curr_dist
+                    best_edge = edge
+            
+            node = best_node
+            total_dist += best_dist
             passed.append(node)
+            passed_edge.add(best_edge)
 
         total_dist += graph.get_shortest_path(node)[0]
 
