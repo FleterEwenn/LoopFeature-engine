@@ -5,10 +5,10 @@ def test_basics_Graph():
     points = ["p1", "p2", "p3", "p4"]
     graph.add_elements(points)
 
-    assert graph.get_neighbors("p1") == [("p2", None)]
-    assert sorted(graph.get_neighbors("p3")) == [("p2", None), ("p4", None)]
-    assert sorted(graph.get_neighbors("p2")) == [("p1", None), ("p3", None)]
-    assert graph.get_neighbors("p4") == [("p3", None)]
+    assert graph.get_neighbors("p1") == [("p2", None, None)]
+    assert sorted(graph.get_neighbors("p3")) == [("p2", None, None), ("p4", None, None)]
+    assert sorted(graph.get_neighbors("p2")) == [("p1", None, None), ("p3", None, None)]
+    assert graph.get_neighbors("p4") == [("p3", None, None)]
 
 def test_shortest_path_Graph():
     graph = Graph(lambda x, y : 1)

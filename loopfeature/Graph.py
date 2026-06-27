@@ -24,7 +24,7 @@ class Graph:
 
             if not current_weight > self.__dijkstra[current_node][0]:
 
-                for neighbor, neighbor_weight in self.get_neighbors(current_node):
+                for neighbor, neighbor_weight, _ in self.get_neighbors(current_node):
 
                     new_weight = current_weight + neighbor_weight
                     if new_weight < self.__dijkstra[neighbor][0]:
@@ -32,8 +32,8 @@ class Graph:
 
                         file.append((new_weight, neighbor))
     
-    def add_elements(self, elements_list:list):
+    def add_elements(self, elements_list:list, other_const_params=None):
         for i in range(1, len(elements_list)):
             weight = self.__weight_function(elements_list[i], elements_list[i-1])
-            self.graph[elements_list[i]] = self.graph.get(elements_list[i], []) + [(elements_list[i-1], weight)]
-            self.graph[elements_list[i-1]] = self.graph.get(elements_list[i-1], []) + [(elements_list[i], weight)]
+            self.graph[elements_list[i]] = self.graph.get(elements_list[i], []) + [(elements_list[i-1], weight, other_const_params)]
+            self.graph[elements_list[i-1]] = self.graph.get(elements_list[i-1], []) + [(elements_list[i], weight, other_const_params)]

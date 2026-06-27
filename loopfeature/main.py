@@ -32,14 +32,16 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
 
     for path in list_path:
         
-        elevation_gain = 0
+        elevation_gain_FtoL = 0
+        elevation_gain_LtoF = 0
         total_dist = 0
 
         x,y = tiff_file.index(path["geometry"][0]["lon"], path["geometry"][0]["lat"])
         elevation = band[x, y]
-        list_points = [Point(path["geometry"][0]["lat"], path["geometry"][0]["lon"], path["nodes"][0], elevation)]
+        first_point = Point(path["geometry"][0]["lat"], path["geometry"][0]["lon"], path["nodes"][0], elevation)
+        list_points = [first_point]
 
-        current_segment = Segment(0, path["id"])
+        current_segment = Segment(0, path["id"], first_point, None, 0, 0, 0)
 
         for i in range(1, len(path["geometry"])):
 
@@ -58,32 +60,37 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
 
             list_points.append(current_point)
 
-            elevation_gain += (list_points[i-1].elevation - elevation)
+            diff_elevation = elevation - list_points[i-1].elevation
+            if diff_elevation >= 0:
+                elevation_gain_FtoL += diff_elevation
+            else:
+                elevation_gain_LtoF -= diff_elevation
 
             total_dist += list_points[i-1].calcul_dist(current_point)
 
-        ratio = elevation_gain/(total_dist/1000)
+        current_segment.last_point = current_point
+        current_segment.distance = total_dist
+        current_segment.elev_gain_FtoL = elevation_gain_FtoL
+        current_segment.elev_gain_LtoF = elevation_gain_LtoF
 
         path_params = path["tags"]
 
         score = len(path["geometry"])
         if path_params.get("surface",) == "aslphat":
-            score -= 25
+            score -= 100
         if path_params.get("highway") == "tertiary":
-            score -= 30
+            score -= 100
         if path_params.get("surface") == "dirt":
-            score += 25
+            score += 150
         if path_params.get("highway") == "path":
-            score += 30
+            score += 100
         if path_params.get("highway") == "footway":
-            score += 25
+            score += 75
         if path_params.get("highway") == "service":
-            score -25
-            
-        score += 100/(abs(28-ratio)+1)**1.2
+            score -= 50
         current_segment.score = score
         
-        graphe.add_elements(list_points)
+        graphe.add_elements(list_points, other_const_params=path["id"])
 
         dict_id_point[path["nodes"][0]] = dict_id_point.get(path["nodes"][0], []) + [current_segment]
 
