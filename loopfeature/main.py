@@ -38,7 +38,7 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
 
         x,y = tiff_file.index(path["geometry"][0]["lon"], path["geometry"][0]["lat"])
         elevation = band[x, y]
-        first_point = Point(path["geometry"][0]["lat"], path["geometry"][0]["lon"], path["nodes"][0], elevation)
+        first_point = Point(round(path["geometry"][0]["lat"], 5), round(path["geometry"][0]["lon"], 5), path["nodes"][0], elevation)
         list_points = [first_point]
 
         current_segment = Segment(0, path["id"], first_point, None, 0, 0, 0)
@@ -75,19 +75,22 @@ with rasterio.open("loopfeature/data/france.tif") as tiff_file:
 
         path_params = path["tags"]
 
-        score = len(path["geometry"])
-        if path_params.get("surface",) == "aslphat":
-            score -= 50
+        score = 0.3*(len(path["geometry"])**1.5)
+        if path_params.get("highway") == "residential":
+            score -= 200
+        if path_params.get("surface") == "aslphat":
+            score -= 150
         if path_params.get("highway") == "tertiary":
-            score -= 50
+            score -= 200
         if path_params.get("surface") == "dirt":
-            score += 100
+            score += 200
         if path_params.get("highway") == "path":
-            score += 75
+            score += 100
         if path_params.get("highway") == "footway":
-            score += 50
+            score += 100
         if path_params.get("highway") == "service":
-            score -= 25
+            score -= 300
+
         current_segment.score = score
         
         graphe.add_elements(list_points, other_params=current_segment)
