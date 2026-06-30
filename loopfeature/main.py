@@ -4,6 +4,7 @@ from point import Point
 from segment import Segment
 from generate_GPX import generate_GPX
 from loop import create_loop
+from srtm import get_tile
 import time
 import rasterio
 
@@ -27,7 +28,9 @@ start = None
 graphe = Graph(Point.calcul_dist)
 dict_id_point = {}
 
-with rasterio.open("loopfeature/data/france.tif") as tiff_file:
+filename = get_tile(center)
+
+with rasterio.open(f"loopfeature/data/{filename}") as tiff_file:
     band = tiff_file.read(1)
 
     for path in list_path:
