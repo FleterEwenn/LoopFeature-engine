@@ -1,4 +1,4 @@
-def generate_GPX(point_list:list[float, float]):
+def save_GPX(point_list:list[float, float], filename:str, path_dir:str):
     text_GPX = """<?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="LoopFeature" xmlns="http://www.topografix.com/GPX/1/1">
 <trk>
@@ -9,5 +9,7 @@ def generate_GPX(point_list:list[float, float]):
 
     text_GPX += "</trkseg>\n</trk>\n</gpx>\n"
     
-    with open("trace.gpx", "w") as file:
+    path = path_dir + filename + ".gpx"
+
+    with open(path, "w") as file:
         file.write(text_GPX)
