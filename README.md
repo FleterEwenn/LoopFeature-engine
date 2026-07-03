@@ -77,9 +77,29 @@ Planned improvements include:
 - More realistic elevation modelling
 - Better loop quality
 - Configurable user preferences
-- Packaging as a desktop application
 
 ---
+
+## Install
+
+First, clone the repo:
+```bash
+git clone https://github.com/FleterEwenn/LoopFeature.git
+```
+Then add the package to pip:
+```bash
+cd LoopFeature
+pip install -e .
+```
+
+To use it, just import it as module
+```python
+import loopfeature
+```
+Or:
+```python
+from loopfeature import generate_route, save_gpx
+```
 
 ## Testing
 

@@ -1,4 +1,4 @@
-def save_GPX(point_list:list[float, float], filename:str, path_dir:str):
+def save_gpx(point_list:list[float, float], filename:str, path_dir:str):
     text_GPX = """<?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="LoopFeature" xmlns="http://www.topografix.com/GPX/1/1">
 <trk>
