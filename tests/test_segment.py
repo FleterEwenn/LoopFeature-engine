@@ -1,4 +1,4 @@
-from loopfeature.segment import Segment
+from src.loopfeature.segment import Segment
 
 def test_access_attribute_Segment():
     segment = Segment(35, 123456789, (45, 1), (46, 2), 36, 10, 400, False)

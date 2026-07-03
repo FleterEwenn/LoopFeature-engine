@@ -1,4 +1,4 @@
-from loopfeature.point import Point
+from src.loopfeature.point import Point
 
 def test_access_attribute_class_Point():
     point1 = Point(10, 20, 123456789, 230)

@@ -1,10 +1,9 @@
-from graph import Graph
-from point import Point
-from segment import Segment
+from src.loopfeature.graph import Graph
+from src.loopfeature.point import Point
+from src.loopfeature.segment import Segment
 
 def create_loop(graph:Graph, start:Point, dist_max:float, dict_segment:dict[int, list[Segment]])->tuple[list[Point], float]:
         graph.construct_dijkstra(start)
-        
         node = start
         passed = [start]
         total_dist = 0
@@ -20,7 +19,7 @@ def create_loop(graph:Graph, start:Point, dist_max:float, dict_segment:dict[int,
             ditance_node_to_start = node.calcul_dist(start)
 
             for neighbor, curr_dist, segment in neighbors:
-                real_cul_de_sac = segment.is_service and(len(graph.get_neighbors(segment.last_point)) <= 1 or len(graph.get_neighbors(segment.first_point)) <= 1)
+                real_cul_de_sac = segment.is_service and (len(graph.get_neighbors(segment.last_point)) <= 1 or len(graph.get_neighbors(segment.first_point)) <= 1)
                 if real_cul_de_sac:
                     continue
                 

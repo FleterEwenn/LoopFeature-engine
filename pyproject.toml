@@ -10,18 +10,16 @@ readme = "README.md"
 requires-python = ">=3.13"
 
 authors = [
-    { name = "Ton Nom", email = "ton.email@example.com" }
+    { name = "FleterEwenn", email = "fleter.ewenn@gmail.com" }
 ]
 
 license = { file = "LICENSE" }
 
 keywords = [
     "running",
-    "route",
     "gpx",
     "osm",
     "openstreetmap",
-    "navigation",
     "trail"
 ]
 
@@ -37,15 +35,17 @@ classifiers = [
 ]
 
 dependencies = [
-    "networkx",
-    "gpxpy",
-    "requests"
+    "requests>=2.34",
+    "rasterio>=1.5"
 ]
 
 [project.urls]
-Homepage = "https://github.com/ton-pseudo/runningroute-engine"
-Repository = "https://github.com/ton-pseudo/runningroute-engine"
-Issues = "https://github.com/ton-pseudo/runningroute-engine/issues"
+Homepage = "https://github.com/FleterEwenn/LoopFeature"
+Repository = "https://github.com/FleterEwenn/LoopFeature"
+Issues = "https://github.com/FleterEwenn/LoopFeature/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}

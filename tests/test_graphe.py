@@ -1,4 +1,4 @@
-from loopfeature.graph import Graph
+from src.loopfeature.graph import Graph
 
 def test_basics_Graph():
     graph = Graph(lambda x, y : None)

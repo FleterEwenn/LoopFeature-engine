@@ -1,11 +1,16 @@
-from overpass import get_path
-from graph import Graph
-from point import Point
-from segment import Segment
-from loop import create_loop
-from srtm import get_tile
+from src.loopfeature.overpass import get_path
+from src.loopfeature.graph import Graph
+from src.loopfeature.point import Point
+from src.loopfeature.segment import Segment
+from src.loopfeature.loop import create_loop
+from src.loopfeature.srtm import get_tile
 import time
 import rasterio
+from pathlib import Path
+
+parent = Path(__file__).parent
+data_dir = parent / "data"
+data_dir.mkdir(exist_ok=True)
 
 def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple[list[Point], float]:
     
@@ -26,7 +31,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
 
     filename = get_tile(center)
 
-    with rasterio.open(f"loopfeature/data/{filename}") as tiff_file:
+    with rasterio.open(parent / f"data/{filename}") as tiff_file:
         band = tiff_file.read(1)
 
         for path in list_path:
@@ -89,7 +94,8 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
                 score += 100
             if path_params.get("highway") == "service":
                 score -= 100
-                current_segment.is_service = True
+                if len(path["nodes"]) <= 10:
+                    current_segment.is_service = True
 
             current_segment.score = score
             
