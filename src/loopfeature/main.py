@@ -1,9 +1,9 @@
-from src.loopfeature.overpass import get_path
-from src.loopfeature.graph import Graph
-from src.loopfeature.point import Point
-from src.loopfeature.segment import Segment
-from src.loopfeature.loop import create_loop
-from src.loopfeature.srtm import get_tile
+from .overpass import get_path
+from .graph import Graph
+from .point import Point
+from .segment import Segment
+from .loop import create_loop
+from .srtm import get_tile
 import time
 import rasterio
 from pathlib import Path

@@ -1,6 +1,6 @@
-from src.loopfeature.graph import Graph
-from src.loopfeature.point import Point
-from src.loopfeature.segment import Segment
+from .graph import Graph
+from .point import Point
+from .segment import Segment
 
 def create_loop(graph:Graph, start:Point, dist_max:float, dict_segment:dict[int, list[Segment]])->tuple[list[Point], float]:
         graph.construct_dijkstra(start)
