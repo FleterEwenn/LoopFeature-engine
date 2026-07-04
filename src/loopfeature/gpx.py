@@ -9,7 +9,8 @@ def save_gpx(point_list:list[float, float], filename:str, path_dir:str):
 
     text_GPX += "</trkseg>\n</trk>\n</gpx>\n"
     
-    path = path_dir + filename + ".gpx"
+    filename = filename + ".gpx"
+    path = path_dir / filename
 
     with open(path, "w") as file:
         file.write(text_GPX)
