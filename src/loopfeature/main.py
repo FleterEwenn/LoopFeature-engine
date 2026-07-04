@@ -41,7 +41,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
             total_dist = 0
 
             x,y = tiff_file.index(path["geometry"][0]["lon"], path["geometry"][0]["lat"])
-            elevation = band[x, y]
+            elevation = float(band[x, y])
             first_point = Point(round(path["geometry"][0]["lat"], 5), round(path["geometry"][0]["lon"], 5), path["nodes"][0], elevation)
             list_points = [first_point]
 
@@ -53,7 +53,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
                 lon = round(path["geometry"][i]["lon"], 5)
                 
                 x,y = tiff_file.index(lon, lat)
-                elevation = band[x, y]
+                elevation = float(band[x, y])
 
                 current_point = Point(lat, lon, path["nodes"][i], elevation)
 
