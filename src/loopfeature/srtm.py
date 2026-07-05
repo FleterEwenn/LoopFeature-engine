@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 
 parent = Path(__file__).parent
-print(parent)
 
 def get_tile(center:tuple[float, float])->str:
     lat = int((center[0]//10)*10)

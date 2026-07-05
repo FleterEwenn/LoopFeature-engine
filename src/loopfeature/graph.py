@@ -5,10 +5,10 @@ class Graph:
         self.__weight_function = weight_function
         
     def get_neighbors(self, node)->list:
-        return self.graph[node]
+        return self.graph.get(node)
     
     def get_shortest_path(self, node)->tuple:
-        return self.__dijkstra[node]
+        return self.__dijkstra.get(node)
 
     def construct_dijkstra(self, start):
         self.__dijkstra = {n:(float("inf"), None) for n in self.graph}

@@ -17,6 +17,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
     list_path = False
 
     center = (float(lat_center), float(lon_center))
+    center_Point = Point(center[0], center[1], 0, 0)
 
     distance = dist_wanted * 1000
 
@@ -25,6 +26,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
         time.sleep(0.1)
 
     start = None
+    min_dist_to_start = float("inf")
 
     graphe = Graph(Point.calcul_dist)
     dict_id_point = {}
@@ -59,7 +61,8 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
 
                 dict_id_point[path["nodes"][i]] = dict_id_point.get(path["nodes"][i], []) + [current_segment]
 
-                if (round(center[0], 3), round(center[1], 3)) == (round(path["geometry"][i]["lat"], 3), round(path["geometry"][i]["lon"], 3)) and not start:
+                curr_dist_to_start = center_Point.calcul_dist(current_point)
+                if curr_dist_to_start < min_dist_to_start:
                     start = current_point
 
                 list_points.append(current_point)
