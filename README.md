@@ -84,7 +84,7 @@ Planned improvements include:
 
 Install it with pip:
 ```python
-pip install 
+pip install git+https://github.com/FleterEwenn/LoopFeature.git#egg=loopfeature
 ```
 
 To use it, just import it as module:
