@@ -82,17 +82,12 @@ Planned improvements include:
 
 ## Install
 
-First, clone the repo:
-```bash
-git clone https://github.com/FleterEwenn/LoopFeature.git
-```
-Then add the package to pip:
-```bash
-cd LoopFeature
-pip install -e .
+Install it with pip:
+```python
+pip install 
 ```
 
-To use it, just import it as module
+To use it, just import it as module:
 ```python
 import loopfeature
 ```
