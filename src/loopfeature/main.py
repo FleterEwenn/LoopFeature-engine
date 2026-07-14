@@ -47,6 +47,12 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
             first_point = Point(round(path["geometry"][0]["lat"], 5), round(path["geometry"][0]["lon"], 5), path["nodes"][0], elevation)
             list_points = [first_point]
 
+            curr_dist_to_start = center_Point.calcul_dist(first_point)
+            if curr_dist_to_start < min_dist_to_start:
+                start = first_point
+                min_dist_to_start = curr_dist_to_start
+
+
             current_segment = Segment(0, path["id"], first_point, None, 0, 0, 0, False)
 
             for i in range(1, len(path["geometry"])):
@@ -64,6 +70,7 @@ def generate_route(lat_center:float, lon_center:float, dist_wanted:float)->tuple
                 curr_dist_to_start = center_Point.calcul_dist(current_point)
                 if curr_dist_to_start < min_dist_to_start:
                     start = current_point
+                    min_dist_to_start = curr_dist_to_start
 
                 list_points.append(current_point)
 
